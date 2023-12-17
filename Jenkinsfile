@@ -1,15 +1,9 @@
-pipeline {
-    agent {
-        docker {
-            image 'node:16-buster-slim' 
-            args '-p 3000:3000' 
-        }
-    }
-    stages {
-        stage('Build') { 
-            steps {
-                sh 'npm install'
-            }
-        }
+node {
+    stage('Build') { 
+		try {
+        	sh 'npm install'
+		} catch(ex) {
+			echo 'Something failed, I should sound the klaxons!'
+		}
     }
 }
