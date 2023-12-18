@@ -1,9 +1,10 @@
 node {
-    stage('Build') { 
-		try {
-        	sh 'npm install'
-		} catch(ex) {
-			echo 'Something failed, I should sound the klaxons!'
-		}
-    }
+	docker.image('node:lts-buster-slim').inside {
+        stage('Build') {
+            sh 'npm install'
+        }
+		stage('Test') {
+            sh './jenkins/scripts/test.sh'
+        }
+    }	
 }
