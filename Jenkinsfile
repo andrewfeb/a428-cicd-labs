@@ -3,10 +3,16 @@ node {
         stage('Build') {
             sh 'npm install'
         }
+
         stage('Test') {
             sh './jenkins/scripts/test.sh'
         }
-        stage('Deliver') {
+
+        stage('Manual Approval') {
+            input message: 'Lanjutkanke tahap Deploy? (Klik "Proceed" untuk lanjut ke tahap Deploy)'
+        }
+
+        stage('Deploy') {
             sh './jenkins/scripts/deliver.sh'
             sh 'sleep 60'
             sh './jenkins/scripts/kill.sh'
