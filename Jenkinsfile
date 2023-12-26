@@ -16,8 +16,13 @@ node {
 
         stage('Deploy') {
             sh './jenkins/scripts/deliver.sh'
-            sh 'sleep 60'
             sh './jenkins/scripts/kill.sh'
+            withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                env.GITHUB_REPOSITORY = 'andrewfeb/a428-cicd-labs'
+                sh "git remote set-url origin https://git:$GITHUB_TOKEN@github.com/${env.GITHUB_REPOSITORY}.git"
+                sh 'git push origin HEAD:react-app'
+            }
+            
         }
     }
 }
