@@ -1,6 +1,7 @@
 node {
+    withEnv(['CI=true']) {
     docker.image('node:20-buster-slim').inside('-p 3000:3000') {
-        withEnv(['CI=true']) {
+        
             stage('Build') {
                 sh 'ls -la'
                 sh 'npm install'
@@ -20,6 +21,7 @@ node {
 
             stage('Deploy') {
                 sh './jenkins/scripts/deliver.sh'
+                sh 'ls build'
                 withCredentials([string(credentialsId: 'netlify-token', variable: 'NETLIFY_AUTH_TOKEN')]) {
                     sh 'npx netlify deploy --prod --auth ${NETLIFY_AUTH_TOKEN}'
                 }
