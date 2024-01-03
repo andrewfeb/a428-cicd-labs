@@ -1,5 +1,5 @@
 node {
-    docker.image('node:lts-buster-slim').inside('-p 3000:3000') {
+    docker.image('node:current-alpine3.19').inside('-p 3000:3000') {
         stage('Build') {
             sh 'npm install'
             sh 'node -v'
