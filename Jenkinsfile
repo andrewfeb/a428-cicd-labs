@@ -3,6 +3,7 @@ node {
         stage('Build') {
             sh 'ls'
             sh 'npm install'
+            sh 'npm install netlify --save-dev'
             sh 'node -v'
             sh 'ls'
             sh 'cat package.json'
