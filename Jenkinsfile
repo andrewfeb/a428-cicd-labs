@@ -1,7 +1,7 @@
 node {
     docker.image('node:lts-buster-slim').inside('-p 3000:3000') {
         stage('Build') {
-            sh 'ls'
+            sh 'ls -la'
             sh 'npm install'
             sh 'node -v'
             sh 'ls'
