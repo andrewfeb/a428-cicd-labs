@@ -1,13 +1,10 @@
 node {
     docker.image('node:lts-buster-slim').inside('-p 3000:3000') {
         stage('Build') {
-            sh 'cp .netlify .'
-            sh 'cp netlify.toml .'
-            sh 'cp package.json .'
             sh 'npm install'
             sh 'node -v'
             sh 'ls'
-            sh 'vi package.json'
+            sh 'cat package.json'
             sh 'npx netlify --version'
         }
 
