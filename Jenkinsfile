@@ -1,31 +1,31 @@
-pipeline {
-    agent {
-        docker {
-            image 'node:lts-buster-slim'
-            args '-p 3000:3000'
-        }
-    }
-    environment {
-        CI = 'true'
-    }
-    stages {
-        stage('Build') {
-            steps {
+node {
+    docker.image('node:20-buster-slim').inside('-p 3000:3000') {
+        withEnv(['CI=true']) {
+            stage('Build') {
                 sh 'ls -la'
-                sh 'cat package.json'
                 sh 'npm install'
+                sh 'node -v'
+                sh 'ls'
+                sh 'cat package.json'
+                sh 'npx netlify --version'
             }
-        }
-        stage('Test') {
-            steps {
+
+            stage('Test') {
                 sh './jenkins/scripts/test.sh'
             }
-        }
-        stage('Deliver') {
-            steps {
+
+            stage('Manual Approval') {
+                input message: 'Lanjutkan ke tahap Deploy? (Klik "Proceed" untuk lanjut ke tahap Deploy)'
+            }
+
+            stage('Deploy') {
                 sh './jenkins/scripts/deliver.sh'
-                input message: 'Finished using the website? (Click "Proceed" to continue)'
+                withCredentials([string(credentialsId: 'netlify-token', variable: 'NETLIFY_AUTH_TOKEN')]) {
+                    sh 'npx netlify deploy --prod --auth ${NETLIFY_AUTH_TOKEN}'
+                }
+                sh 'sleep 60s'
                 sh './jenkins/scripts/kill.sh'
+                
             }
         }
     }
