@@ -11,12 +11,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'ls -la'
                 sh 'npm install'
-                sh 'node -v'
-                sh 'ls'
-                sh 'cat package.json'
-                sh 'npx netlify --version'
             }
         }
         stage('Test') {
@@ -32,12 +27,14 @@ pipeline {
         stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
-                sh 'ls build'
+                sh 'sleep 60'
+                sh './jenkins/scripts/kill.sh'
+
+                input message: 'Lanjutkan deploy ke Netlify? (klik "Process" untuk lanjut)'
+
                 withCredentials([string(credentialsId: 'netlify-token', variable: 'NETLIFY_AUTH_TOKEN')]) {
                     sh 'npx netlify deploy --prod --auth ${NETLIFY_AUTH_TOKEN}'
                 }
-                sh 'sleep 60s'
-                sh './jenkins/scripts/kill.sh'
             }
         }
     }
