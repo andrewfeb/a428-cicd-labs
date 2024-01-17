@@ -47,7 +47,7 @@ node {
             ]) {
                 docker.image('mcr.microsoft.com/azure-cli:latest').inside('-it -v ${HOME}:/home/az -e HOME=/home/az') {
                     sh 'az login --service-principal --username ${az_usr} --password ${az_pwd} --tenant ${az_tenant} --output table'
-                    sh 'az container create --resource-group CICDResources --name ${containerName} --image ${registryUrl}/${registryName}:latest --registry-login-server ${registryUrl} --registry-username ${az_usr} --registry-password ${az_pwd} --ip-address Public --protocol TCP --ports 8080 --query "{FQDN:ipAddress.fqdn, IpAddress:ipAddress.ip, Port:ipAddress.ports[0].port}" --output table'
+                    sh 'az container create --resource-group CICDResources --name ${containerName} --image ${registryUrl}/${registryName}:latest --registry-login-server ${registryUrl} --registry-username ${az_usr} --registry-password ${az_pwd} --ip-address Public --protocol TCP --ports 8080 --dns-name-label ${containerName} --query "{FQDN:ipAddress.fqdn, IpAddress:ipAddress.ip, Port:ipAddress.ports[0].port}" --output table'
                 }
             }
         }
