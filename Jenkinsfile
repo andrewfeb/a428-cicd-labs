@@ -25,7 +25,7 @@ node {
         }
     }
 
-    stage('Deploy to cloud') {
+    /*stage('Deploy to cloud') {
         input message: 'Lanjutkan deploy ke Azure? (klik "Process" untuk lanjut)'
 
         withEnv([
@@ -51,5 +51,5 @@ node {
                 }
             }
         }
-    }
+    }*/
 }
