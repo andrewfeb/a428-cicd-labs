@@ -3,10 +3,11 @@ FROM node:lts-buster-slim
 RUN npm install -g http-server
 WORKDIR /app
 COPY package*.json ./
-COPY . .
 RUN npm install
+COPY . .
 RUN npm run build
 
-EXPOSE 8080
-
-CMD [ "http-server", "build" ]
+FROM nginx:stable-alpine as production-stage
+COPY --from=build-stage /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
