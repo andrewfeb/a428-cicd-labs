@@ -24,11 +24,11 @@ node {
         input message: 'Lanjutkan deploy ke Azure? (klik "Process" untuk lanjut)'
 
         withEnv([
-            'registryName=mysimplereactapp',
-            'registryCredential=ACR-REACT1',
+            'registryName=simplereactapp',
+            'registryCredential=ACR-REACT',
             'dockerImage= ',
-            'registryUrl=mysimplereactapp.azurecr.io',
-            'containerName=react-app'
+            'registryUrl=simplereactapp.azurecr.io',
+            'containerName=reactapp'
         ]){
             script {
                 dockerImage = docker.build registryName
