@@ -27,7 +27,7 @@ node {
             'registryCredential=ACR-REACT',
             'dockerImage= ',
             'registryUrl=simplereactapp.azurecr.io',
-            'containerName=reactapp1'
+            'containerName=reactapp'
         ]){
             script {
                 dockerImage = docker.build registryName
