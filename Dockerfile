@@ -3,8 +3,8 @@ FROM node:lts-buster-slim
 RUN npm install -g http-server
 WORKDIR /app
 COPY package*.json ./
-COPY . .
 RUN npm install
+COPY . .
 RUN npm run build
 
 EXPOSE 8080
