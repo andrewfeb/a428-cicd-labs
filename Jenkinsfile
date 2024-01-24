@@ -37,7 +37,7 @@ node {
                 'containerName=react-app'
             ]){
                 script {
-                    dockerImage = docker.build registryName
+                    dockerImage = docker.build(registryName, "-f ./Dockerfile1 .")
                     docker.withRegistry("http://${registryUrl}", registryCredential) {
                         dockerImage.push()
                     }
